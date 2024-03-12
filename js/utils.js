@@ -36,26 +36,21 @@ const makeBook = (objectBook) => {
   container.classList.add("card", "m-3", "book_item");
   container.setAttribute("data-id", objectBook.id);
 
-  // Membuat elemen card body
   const cardBody = document.createElement("div");
   cardBody.classList.add("card-body");
 
-  // Membuat elemen judul buku
   const title = document.createElement("h5");
   title.classList.add("card-title");
   title.innerText = objectBook.title;
 
-  // Membuat elemen penulis buku
   const author = document.createElement("p");
   author.classList.add("card-text");
   author.innerText = `Penulis: ${objectBook.author}`;
 
-  // Membuat elemen tahun terbit
   const year = document.createElement("p");
   year.classList.add("card-text");
   year.innerText = `Tahun: ${objectBook.year}`;
 
-  // Membuat elemen action
   const action = document.createElement("div");
   action.classList.add("action", "d-flex", "gap-3");
   if (objectBook.isCompleted) {
@@ -83,7 +78,7 @@ const makeBook = (objectBook) => {
   deleteButton.classList.add("btn", "btn-danger");
   deleteButton.innerHTML = `<i class="bi bi-trash3" style="padding-right: 5px;"></i>Hapus Buku`;
   deleteButton.addEventListener("click", () => {
-    document.dispatchEvent(new Event(MODAL_EVENT));
+    modalDelete(objectBook);
   });
 
   action.append(deleteButton);
@@ -98,7 +93,9 @@ const addBook = () => {
   const bookAuthor = document.getElementById("inputBookAuthor").value;
   const bookYear = document.getElementById("inputBookYear").value;
   const bookIsComplete = document.getElementById("inputBookIsComplete").checked;
+
   const generatedId = generateId();
+
   const bookObject = generateObjectBook({
     id: generatedId,
     title: bookTitle,
@@ -132,9 +129,12 @@ const removeBook = (id) => {
 
 const undoBookFromCompleted = (id) => {
   const bookTarget = findBook(id);
+
   if (!bookTarget) return null;
+
   bookTarget.isCompleted = false;
   document.dispatchEvent(new Event(RENDER_EVENT));
+
   saveDataToStorage();
 };
 
@@ -160,27 +160,19 @@ const searchBook = () => {
 modalDelete = (objectBook) => {
   const { id: bookId, title, author, year } = objectBook;
 
-  // Select the modal elements
   const modalTitle = document.getElementById("modalTitle");
   const modalBody = document.getElementById("modalBody");
-  const deleteButton = document.getElementById("modalSubmit");
 
-  // Set the modal content
   modalTitle.innerText = `Hapus Buku ${title}`;
   modalBody.innerText = `Apakah kamu yakin buku ${title} dari author ${author} tahun ${year} akan dihapus?`;
 
-  // Show the modal using Bootstrap's modal method
-  const modal = new bootstrap.Modal(document.getElementById("modalBookShelf"));
-  modal.show();
-
-  // Attach event listener to delete button
-  deleteButton.addEventListener("click", () => {
-    // Hide the modal
-    modal.hide();
-    // Logic to remove the book
-    removeBook(bookId);
-    modalNotification(objectBook);
-  });
+  const hiddenInput = document.createElement("input");
+  hiddenInput.type = "hidden";
+  hiddenInput.id = "hiddenBookId";
+  hiddenInput.value = bookId;
+  modalTitle.appendChild(hiddenInput);
+  document.dispatchEvent(new Event(MODAL_EVENT));
+  // modalNotification(objectBook);
 };
 
 modalNotification = (objectBook) => {

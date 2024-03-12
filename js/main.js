@@ -7,6 +7,7 @@ document.addEventListener(RENDER_EVENT, () => {
     "incompleteBookshelfList"
   );
   incompleteBookshelfList.innerHTML = "";
+
   const completeBookshelfList = document.getElementById(
     "completeBookshelfList"
   );
@@ -24,26 +25,32 @@ document.addEventListener(RENDER_EVENT, () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const submitBookForm = document.getElementById("inputBook");
-
   submitBookForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addBook();
   });
+
   const searchBookForm = document.getElementById("searchBook");
   searchBookForm.addEventListener("submit", (e) => {
     e.preventDefault();
     searchBook();
   });
+
   if (isStorageExist()) {
     loadDataFromStorage();
   }
 });
 
 document.addEventListener(MODAL_EVENT, () => {
-  const bookItem = document.querySelector(".book_item");
-  if (bookItem) {
-    const bookId = bookItem.getAttribute("data-id");
-    const book = books.find((b) => b.id == bookId);
-    modalDelete(book);
-  }
+  const modalElement = document.getElementById("modalBookShelf");
+  const modal = new bootstrap.Modal(modalElement);
+  modal.show();
+
+  const deleteButton = modalElement.querySelector("#modalSubmit");
+  const bookId = modalElement.querySelector("input").getAttribute("value");
+
+  deleteButton.addEventListener("click", () => {
+    modal.hide();
+    removeBook(parseInt(bookId));
+  });
 });
