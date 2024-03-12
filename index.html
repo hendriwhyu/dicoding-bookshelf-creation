@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <title>Bookshelf App - Submission Dicoding</title>
+  </head>
+  <body>
+    <header class="p-3 mb-3 border-bottom sticky-top bg-primary text-white">
+      <div class="container">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+          <h3 class="mb-3 mb-md-0 me-md-auto">Bookshelf Apps</h3>
+
+          <form
+            class="d-flex flex-row gap-3 col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+            id="searchBook"
+          >
+            <input type="search" class="form-control" id="searchBookTitle" />
+            <button
+              id="searchSubmit"
+              class="btn btn-secondary sm:d-block"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container-fluid" style="padding-bottom: 12.5px">
+        <div class="row gap-lg-0 gap-md-2 gap-2">
+          <div class="col-lg-4 col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <form id="inputBook">
+                  <div class="mb-3">
+                    <label for="inputBookTitle" class="form-label">Judul</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputBookTitle"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputBookAuthor" class="form-label"
+                      >Author</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputBookAuthor"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputBookYear" class="form-label">Tahun</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputBookYear"
+                    />
+                  </div>
+                  <div class="mb-3 form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="inputBookIsComplete"
+                    />
+                    <label class="form-check-label" for="inputBookIsComplete"
+                      >Selesai dibaca</label
+                    >
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-12 book_shelf">
+            <div class="row-sm-4 mb-3">
+              <div class="card" style="height: 300px">
+                <div class="card-body">
+                  <h5 class="card-title">Buku yang belum Diselesaikan</h5>
+                  <div
+                    class="container overflow-auto book_list"
+                    style="height: 200px"
+                    id="incompleteBookshelfList"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="row-sm-4">
+              <div class="card" style="height: 300px">
+                <div class="card-body">
+                  <h5 class="card-title">Buku yang Selesai dibaca</h5>
+                  <div
+                    class="container overflow-auto book_list"
+                    style="height: 200px"
+                    id="completeBookshelfList"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer mt-auto py-3 bg-primary">
+        <div class="container text-center">
+          <span class="text-white"
+            >Copyright &copy; Hendri Wahyu Perdana 2024</span
+          >
+        </div>
+      </footer>
+      <!-- Modal Validation -->
+
+      <div
+        class="modal fade"
+        id="modalBookShelf"
+        tabindex="-1"
+        aria-labelledby="modalTitle"
+        aria-hidden="true"
+      >
+        <!-- Modal dialog -->
+        <div class="modal-dialog">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTitle">Modal title</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="modalBody">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary" id="modalSubmit">
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal Validation -->
+      <!-- Modal Notification -->
+      <div
+        id="notificationModal"
+        class="modal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="notificationModalLabel"
+        aria-hidden="true"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="position: fixed; right: 20px; top: 20px"
+        >
+          <div class="modal-content">
+            <div class="modal-body" id="modalNotificationBody"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- End Modal Notification -->
+    </main>
+    <script src="./js/storage.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/main.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
